@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Liste des taches</title>
+    <style>
+      /* CSS */
+ 
+      body {
+        background-color: #121518;
+        color: white;
+        font-family:Arial, Helvetica, sans-serif
+        
+      }
+
+      .button-48:before {
+        animation: opacityFallbackOut 0.5s step-end forwards;
+        backface-visibility: hidden;
+        background-color: #ebebeb;
+        clip-path: polygon(-1% 0, 0 0, -25% 100%, -1% 100%);
+        content: "";
+        height: 100%;
+        left: 0;
+        position: absolute;
+        top: 0;
+        transform: translateZ(0);
+        transition: clip-path 0.5s cubic-bezier(0.165, 0.84, 0.44, 1),
+          -webkit-clip-path 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+        width: 100%;
+      }
+
+      .button-48:hover:before {
+        animation: opacityFallbackIn 0s step-start forwards;
+        clip-path: polygon(0 0, 101% 0, 101% 101%, 0 101%);
+      }
+
+      .button-48:after {
+        background-color: #ffffff;
+      }
+
+      .button-48 span {
+        z-index: 1;
+        position: relative;
+      }
+      table {
+        background-color: ;
+      }
+      body {
+        background-image: url("photo-1501139083538-0139583c060f\\(1\).jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
+      table {
+        border-collapse: collapse;
+        width: 50%;
+        margin: 0 auto;
+      }
+
+      th,
+      td {
+        text-align: left;
+        padding: 8px;
+      }
+    </style>
+  </head>
+
+  <!---body-->
+  <body>
+    <h1 align="center"><u>Liste de tâches</u></h1>
+    <p align="center" id="time" style="font-size: 36px"></p>
+    <table width="100%" border="2">
+      <tbody>
+        <tr>
+          <th scope="col"><h2>Ajouter une tâche</h2></th>
+          <th scope="col"><h2>Liste des tâches actives</h2></th>
+        </tr>
+        <tr>
+          <td rowspan="2">
+            <form>
+              <label for="designation">Désignation:</label>
+              <input
+                type="text"
+                id="designation"
+                name="designation"
+                required
+              /><br /><br />
+
+              <label for="duree">Durée d'expiration :</label>
+              <input
+                type="number"
+                id="duree"
+                name="duree"
+                required
+              /><br /><br />
+
+              <label for="priorite">Priorité:</label>
+              <select id="priorite" name="priorite">
+                <option value="faible">Faible</option>
+                <option value="moyenne">Moyenne</option>
+                <option value="elevee">Élevée</option></select
+              ><br /><br />
+
+              <input type="button" value="Ajouter" onclick="Tache()" />
+            </form>
+          </td>
+          <td>
+            <table id="tableauTaches">
+              <tr>
+                <th>Désignation</th>
+                <th>Heure d'ajout</th>
+                <th>Priorité</th>
+                <th>Durée d'expiration</th>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr>
+          <td id="nbr-tache">Nombre de taches : 0</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+
+  <!---script -->
+  <script>
+    let nbr = 0;
+    function Tache() {
+      var designation = document.getElementById("designation").value;
+      var duree = document.getElementById("duree").value;
+      var priorite = document.getElementById("priorite").value;
+      var nbr_de_tache = document.getElementById("nbr-tache");
+
+      var tableauTaches = document.getElementById("tableauTaches");
+      var nouvelleLigne = tableauTaches.insertRow(-1);
+      var celluleDesignation = nouvelleLigne.insertCell(0);
+      var celluleHeure = nouvelleLigne.insertCell(1);
+      var cellulePriorite = nouvelleLigne.insertCell(2);
+      var celluleDuree = nouvelleLigne.insertCell(3);
+      celluleDesignation.innerHTML = designation;
+      nbr++;
+
+      var maintenant = new Date();
+      var heure = maintenant.getHours();
+      var minutes = maintenant.getMinutes();
+      var secondes = maintenant.getSeconds();
+      var heureact = heure + ":" + minutes + ":" + secondes;
+
+      celluleHeure.innerHTML = heureact;
+      cellulePriorite.innerHTML = priorite;
+      celluleDuree.innerHTML = duree;
+
+      document.cookie = "tache_" + designation + "=" + duree + "; path=/";
+
+      function supprimer() {
+        tableauTaches.deleteRow(nouvelleLigne.rowIndex);
+        document.cookie =
+          "tache_" +
+          designation +
+          "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
+        nbr--;
+        console.log(nbr);
+        nbr_de_tache.innerHTML = `nombre de tache ${nbr}`;
+      }
+      console.log(nbr);
+
+      nbr_de_tache.innerHTML = `nombre de tache ${nbr}`;
+
+      setTimeout(supprimer, duree * 1000);
+      console.log(nbr);
+    }
+
+    const heureElement = document.getElementById("heure");
+
+    function Heure() {
+      var d = new Date();
+      var hours = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+      console.log(hours);
+      document.getElementById("time").innerHTML = hours;
+      setTimeout(Heure, 1000); //pour la synchronisation
+    }
+
+    Heure();
+  </script>
+</html>
